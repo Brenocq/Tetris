@@ -33,7 +33,7 @@ void Tetris::run()
 
 void Tetris::printHelp()
 {
-std::cout << BOLDGREEN << "┌───────────────────── TETRIS ───────────────────┐\n" <<
+std::cout << BOLDGREEN << "┌──────────────────── TETRIS ────────────────────┐\n" <<
 			 BOLDGREEN << "│ - " << YELLOW << "AD " << WHITE << "or" << YELLOW<< " <Right-Arrow><Left-Arrow>" << WHITE << " to translate"<<BOLDGREEN<<" │\n" <<
 			 BOLDGREEN << "│ - " << YELLOW << "SW " << WHITE << "or" << YELLOW<< " <Down-Arrow><Up-Arrow>" << WHITE << " to rotate "<<BOLDGREEN<<"      │\n" <<
 			 BOLDGREEN << "│ - " << YELLOW << "<Space>" << WHITE << " to push down"<<BOLDGREEN<<"                         │\n" <<
@@ -181,9 +181,9 @@ void Tetris::onDraw()
 	if(_gameOver)
 	{
 		_window->close();
-		std::cout << BOLDRED << "┌────────────────────────────┐\n";
-		std::cout << BOLDRED << "│          GAME OVER         │\n";
-		std::cout << BOLDRED << "└────────────────────────────┘\n";
+		std::cout << BOLDRED << "┌───────────────────────────┐\n";
+		std::cout << BOLDRED << "│         GAME OVER         │\n";
+		std::cout << BOLDRED << "└───────────────────────────┘\n";
 		std::cout << BOLDGREEN << "Score: " << _score << "\nWell played!" << RESET << std::endl;
 		return;
 	}

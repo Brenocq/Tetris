@@ -137,7 +137,8 @@ bool Block::colliding(std::vector<std::vector<bool>> matrix)
 bool Block::canMove(glm::ivec2 vec, std::vector<std::vector<bool>> matrix)
 {
 	glm::ivec2 temp = _position;
-	move(vec);
+	_position.x+=vec.x;
+	_position.y+=vec.y;
 
 	bool possible = true;
 	if(_position.x>=0 && _position.x<GAME_WIDTH && _position.y>=0 && _position.y<GAME_HEIGHT)

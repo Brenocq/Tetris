@@ -1,5 +1,9 @@
 # Tetris
-<img src="./img/tetris.gif" height="200">
+<p align="center">
+ <img src="./img/tetris1.png" height="300">
+<img src="./img/tetris.gif" height="300">
+ <img src="./img/tetris2.png" height="300">
+</p>
 Simple tetris made in OpenGL
 
 ## Installation

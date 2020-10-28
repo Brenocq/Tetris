@@ -134,13 +134,28 @@ bool Block::colliding(std::vector<std::vector<bool>> matrix)
 	return false;
 }
 
+bool Block::canMove(glm::ivec2 vec, std::vector<std::vector<bool>> matrix)
+{
+	glm::ivec2 temp = _position;
+	move(vec);
+
+	bool possible = true;
+	if(_position.x>=0 && _position.x<GAME_WIDTH && _position.y>=0 && _position.y<GAME_HEIGHT)
+		possible = !matrix[_position.x][_position.y];
+	else
+		possible = false;
+	_position = temp;
+
+	return possible;
+}
+
 bool Block::canRotate(glm::vec2 point, float angle, std::vector<std::vector<bool>> matrix)
 {
 	glm::ivec2 temp = _position;
 	rotate(point, angle);
 
 	bool possible = true;
-	if(_position.x>=0 && _position.x<GAME_WIDTH && _position.y>0 && _position.y<GAME_HEIGHT)
+	if(_position.x>=0 && _position.x<GAME_WIDTH && _position.y>=0 && _position.y<GAME_HEIGHT)
 		possible = !matrix[_position.x][_position.y];
 	else
 		possible = false;

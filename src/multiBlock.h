@@ -28,7 +28,7 @@ class MultiBlock{
 
 		void draw(GLuint program);
 
-		void move(glm::ivec2 vec);
+		void move(glm::ivec2 vec, std::vector<std::vector<bool>> matrix);
 		void rotate(bool clockwise, std::vector<std::vector<bool>> matrix);
 		bool colliding(std::vector<std::vector<bool>> matrix);
 

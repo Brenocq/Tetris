@@ -33,12 +33,12 @@ void Tetris::run()
 
 void Tetris::printHelp()
 {
-	std::cout << BOLDGREEN << "---------- TETRIS ----------\n" <<
-			BOLDGREEN << " - " << YELLOW << "AD " << WHITE << "or" << YELLOW<< " <Right-Arrow><Left-Arrow>" << WHITE << " to translate\n" <<
-			BOLDGREEN << " - " << YELLOW << "SW " << WHITE << "or" << YELLOW<< " <Down-Arrow><Up-Arrow>" << WHITE << " to rotate\n" <<
-			BOLDGREEN << " - " << YELLOW << "<Space>" << WHITE << " to push down\n" <<
-			BOLDGREEN << " - " << RED << "<Esq>" << WHITE << " to close\n" <<
-			BOLDGREEN << "----------------------------\n" << RESET;
+std::cout << BOLDGREEN << "┌───────────────────── TETRIS ───────────────────┐\n" <<
+			 BOLDGREEN << "│ - " << YELLOW << "AD " << WHITE << "or" << YELLOW<< " <Right-Arrow><Left-Arrow>" << WHITE << " to translate"<<BOLDGREEN<<" │\n" <<
+			 BOLDGREEN << "│ - " << YELLOW << "SW " << WHITE << "or" << YELLOW<< " <Down-Arrow><Up-Arrow>" << WHITE << " to rotate "<<BOLDGREEN<<"      │\n" <<
+			 BOLDGREEN << "│ - " << YELLOW << "<Space>" << WHITE << " to push down"<<BOLDGREEN<<"                         │\n" <<
+			 BOLDGREEN << "│ - " << RED << "<Esq>" << WHITE << " to close"<<BOLDGREEN<<"                               │\n" <<
+			 BOLDGREEN << "└────────────────────────────────────────────────┘\n" << RESET;
 }
 
 void Tetris::createShaders()
@@ -64,7 +64,7 @@ void Tetris::onKey(int key, int scancode, int action, int mods)
 			break;
 		case GLFW_KEY_A:
 			if(_multiBlock!=nullptr)
-				_multiBlock->move({-1,0});
+				_multiBlock->move({-1,0}, getBlocksMatrix());
 			break;
 		case GLFW_KEY_S:
 			if(_multiBlock!=nullptr)
@@ -72,7 +72,7 @@ void Tetris::onKey(int key, int scancode, int action, int mods)
 			break;
 		case GLFW_KEY_D:
 			if(_multiBlock!=nullptr)
-				_multiBlock->move({1,0});
+				_multiBlock->move({1,0}, getBlocksMatrix());
 			break;
 			break;
 		case GLFW_KEY_UP:
@@ -81,7 +81,7 @@ void Tetris::onKey(int key, int scancode, int action, int mods)
 			break;
 		case GLFW_KEY_RIGHT:
 			if(_multiBlock!=nullptr)
-				_multiBlock->move({1,0});
+				_multiBlock->move({1,0}, getBlocksMatrix());
 			break;
 		case GLFW_KEY_DOWN:
 			if(_multiBlock!=nullptr)
@@ -89,7 +89,7 @@ void Tetris::onKey(int key, int scancode, int action, int mods)
 			break;
 		case GLFW_KEY_LEFT:
 			if(_multiBlock!=nullptr)
-				_multiBlock->move({-1,0});
+				_multiBlock->move({-1,0}, getBlocksMatrix());
 			break;
 		case GLFW_KEY_SPACE:
 			_updateSpeedMS = std::chrono::milliseconds(GAME_STEP_MS/6);
@@ -142,6 +142,21 @@ std::vector<std::vector<bool>> Tetris::getBlocksMatrix()
 			for(auto& block : _blocks)
 				if(block.getPosition().y>=i)
 					block.move({0,-1});
+
+			// Clean matrix
+			for(int i=0;i<GAME_WIDTH;i++)
+				for(int j=0;j<GAME_HEIGHT;j++)
+					matrix[i][j] = false;
+			// Update matrix
+			for(auto block : _blocks)
+			{
+				glm::ivec2 pos = block.getPosition();
+				if(pos.y<GAME_HEIGHT)
+					matrix[pos.x][pos.y]=true;
+			}
+			
+			// Check again same line
+			i--;
 		}
 	}
 
@@ -166,8 +181,10 @@ void Tetris::onDraw()
 	if(_gameOver)
 	{
 		_window->close();
-		std::cout << BOLDRED << "-------------------------------\n---------- GAME OVER ----------\n-------------------------------\n" << RESET;
-		std::cout << BOLDGREEN << "Score: " << _score << "! Well played" << RESET << std::endl;
+		std::cout << BOLDRED << "┌────────────────────────────┐\n";
+		std::cout << BOLDRED << "│          GAME OVER         │\n";
+		std::cout << BOLDRED << "└────────────────────────────┘\n";
+		std::cout << BOLDGREEN << "Score: " << _score << "\nWell played!" << RESET << std::endl;
 		return;
 	}
 
@@ -180,14 +197,14 @@ void Tetris::onDraw()
 
 	// Draw multiBlock (Blocks being controlled by the player)
 	if(_multiBlock == nullptr)
-		_multiBlock = new MultiBlock((MultiBlock::MultiBlockType)(rand()%7));
+		_multiBlock = new MultiBlock((MultiBlock::MultiBlockType)(0));//rand()%7));
 	else
 	{
 		auto deltaTime = clock::now() - lastTime;
 		std::chrono::nanoseconds delta = std::chrono::duration_cast<std::chrono::nanoseconds>(deltaTime);
 		if(delta.count()>=_updateSpeedMS.count())
 		{
-			_multiBlock->move({0,-1});
+			_multiBlock->move({0,-1}, getBlocksMatrix());
 			lastTime = clock::now(); 
 		}
 

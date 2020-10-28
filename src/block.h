@@ -20,6 +20,7 @@ class Block{
 		void move(glm::ivec2 vec);
 		void rotate(glm::vec2 point, float angle);
 		bool colliding(std::vector<std::vector<bool>> matrix);
+		bool canMove(glm::ivec2 vec, std::vector<std::vector<bool>> matrix);
 		bool canRotate(glm::vec2 point, float angle, std::vector<std::vector<bool>> matrix);
 
 		//---------- Getters and Setters ----------//

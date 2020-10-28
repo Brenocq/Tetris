@@ -18,8 +18,8 @@ MultiBlock::MultiBlock(MultiBlockType type):
 	{
 		case IBLOCK:
 			std::cout<<"I block\n";
-			_blocks.push_back(Block({spawnX-1, spawnY}, _color));
 			_blocks.push_back(Block({spawnX, spawnY}, _color));
+			_blocks.push_back(Block({spawnX-1, spawnY}, _color));
 			_blocks.push_back(Block({spawnX+1, spawnY}, _color));
 			_blocks.push_back(Block({spawnX+2, spawnY}, _color));
 			break;
@@ -81,20 +81,32 @@ void MultiBlock::draw(GLuint program)
 	}
 }
 
-void MultiBlock::move(glm::ivec2 vec)
+void MultiBlock::move(glm::ivec2 vec, std::vector<std::vector<bool>> matrix)
 {
-	// Check if can move
-	bool canMove = true;
+	std::vector<std::vector<bool>> matrixOtherBlocks = matrix;
 	for(auto block : _blocks)
 	{
 		glm::ivec2 pos = block.getPosition();
-		if(pos.x+vec.x<0 || pos.x+vec.x>=GAME_WIDTH 
-			|| pos.y+vec.y<0)
-		{
-			canMove=false;
-			break;
-		}
+		if(pos.y<GAME_HEIGHT)
+			matrixOtherBlocks[pos.x][pos.y]=false;
 	}
+	// Check if can move
+	//bool canMove = true;
+	//for(auto block : _blocks)
+	//{
+	//	glm::ivec2 pos = block.getPosition();
+	//	if(pos.x+vec.x<0 || pos.x+vec.x>=GAME_WIDTH 
+	//		|| pos.y+vec.y<0)
+	//	{
+	//		canMove=false;
+	//		break;
+	//	}
+	//}
+
+	// Check can rotate
+	bool canMove = true;
+	for(auto block : _blocks)
+		canMove = canMove && block.canMove(vec, matrixOtherBlocks);
 
 	// Move blocks
 	if(canMove)
@@ -114,27 +126,10 @@ void MultiBlock::rotate(bool clockwise, std::vector<std::vector<bool>> matrix)
 
 	switch(_type)
 	{
-		case IBLOCK:
-			{
-				// Rotate around center
-				glm::ivec2 pos1 = _blocks[1].getPosition();
-				glm::ivec2 pos2 = _blocks[2].getPosition();
-				glm::vec2 point = (pos1+pos2)/2;
-
-				// Check can rotate
-				bool canRotate = true;
-				for(auto block : _blocks)
-					canRotate = canRotate && block.canRotate(point, clockwise?90:-90, matrixOtherBlocks);
-
-				// Rotate
-				if(canRotate)
-					for(auto& block : _blocks)
-						block.rotate(point, clockwise?90:-90);
-			}
-			break;
 		case OBLOCK:
 			// Dont rotate
 			break;
+		case IBLOCK:
 		case JBLOCK:
 		case LBLOCK:
 		case SBLOCK:

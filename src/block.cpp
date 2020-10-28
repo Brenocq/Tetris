@@ -141,8 +141,11 @@ bool Block::canMove(glm::ivec2 vec, std::vector<std::vector<bool>> matrix)
 	_position.y+=vec.y;
 
 	bool possible = true;
-	if(_position.x>=0 && _position.x<GAME_WIDTH && _position.y>=0 && _position.y<GAME_HEIGHT)
-		possible = !matrix[_position.x][_position.y];
+	if(_position.x>=0 && _position.x<GAME_WIDTH && _position.y>=0)
+		if(_position.y>=GAME_HEIGHT)
+			possible = true;
+		else	
+			possible = !matrix[_position.x][_position.y];
 	else
 		possible = false;
 	_position = temp;

@@ -90,20 +90,8 @@ void MultiBlock::move(glm::ivec2 vec, std::vector<std::vector<bool>> matrix)
 		if(pos.y<GAME_HEIGHT)
 			matrixOtherBlocks[pos.x][pos.y]=false;
 	}
-	// Check if can move
-	//bool canMove = true;
-	//for(auto block : _blocks)
-	//{
-	//	glm::ivec2 pos = block.getPosition();
-	//	if(pos.x+vec.x<0 || pos.x+vec.x>=GAME_WIDTH 
-	//		|| pos.y+vec.y<0)
-	//	{
-	//		canMove=false;
-	//		break;
-	//	}
-	//}
 
-	// Check can rotate
+	// Check can move
 	bool canMove = true;
 	for(auto block : _blocks)
 		canMove = canMove && block.canMove(vec, matrixOtherBlocks);

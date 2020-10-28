@@ -197,7 +197,7 @@ void Tetris::onDraw()
 
 	// Draw multiBlock (Blocks being controlled by the player)
 	if(_multiBlock == nullptr)
-		_multiBlock = new MultiBlock((MultiBlock::MultiBlockType)(0));//rand()%7));
+		_multiBlock = new MultiBlock((MultiBlock::MultiBlockType)(rand()%7));
 	else
 	{
 		auto deltaTime = clock::now() - lastTime;

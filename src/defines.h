@@ -15,8 +15,8 @@
 //---------------------------------//
 //------------- Window ------------//
 //---------------------------------//
-#define MAIN_WINDOW_WIDTH 400
-#define MAIN_WINDOW_HEIGHT 800
+#define MAIN_WINDOW_WIDTH 500
+#define MAIN_WINDOW_HEIGHT 1000
 
 //---------------------------------//
 //------ Terminal Color Code ------//
